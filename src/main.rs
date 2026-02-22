@@ -6,10 +6,12 @@ mod transcribe;
 use anyhow::Result;
 use clap::Parser;
 use std::io::BufRead;
+use std::os::unix::process::CommandExt;
 
 #[derive(Parser)]
 #[command(
     name = "speak-to",
+    version,
     about = "Voice input for CLI tools via local Voxtral transcription"
 )]
 struct Cli {
@@ -130,10 +132,9 @@ fn main() -> Result<()> {
     if let Some(client) = cli.client {
         feedback::launching(&client, &text, &cli.client_args);
 
-        use std::os::unix::process::CommandExt;
         let mut cmd = std::process::Command::new(&client);
-        cmd.arg(&text);
         cmd.args(&cli.client_args);
+        cmd.arg(&text);
 
         // exec() replaces the current process — gives the client full terminal control
         let err = cmd.exec();

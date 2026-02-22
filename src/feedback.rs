@@ -36,11 +36,11 @@ pub fn launching(client: &str, text: &str, extra_args: &[String]) {
         format!(" {}", extra_args.join(" "))
     };
     eprintln!(
-        "\n  {} {} \"{}\"{}",
+        "\n  {} {}{} \"{}\"",
         style("→").yellow(),
         client,
-        text,
         args_str,
+        text,
     );
 }
 
